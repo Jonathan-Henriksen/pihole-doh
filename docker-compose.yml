@@ -1,0 +1,37 @@
+version: '3.5'
+networks:
+  dns-net:
+    name: dns-net
+    ipam:
+      driver: default
+      config:
+        - subnet: 50.5.0.0/24
+          gateway: 50.5.0.1
+
+services:
+  pihole:
+    container_name: pihole
+    hostname: pihole
+    image: crunchypancake/pihole-doh:latest
+    networks:
+      dns-net:
+        ipv4_address: 50.5.0.2
+    ports:
+      - '5300:53/tcp'
+      - '5300:53/udp'
+      - '6700:67/udp'
+      - '8000:80/tcp'
+    environment:
+      TZ: 'Europe/Copenhagen'
+      WEBPASSWORD: 'y0urP@ssW0rD'
+      DNSMASQ_LISTENING: 'all'
+      UPSTREAM: 'https://cloudflare-dns.com/dns-query'
+      WEB_BIND_ADDR: '50.5.0.2'
+      FTLCONF_LOCAL_IPV4: '50.5.0.2'
+      PIHOLE_DNS_: '50.5.0.2#5053'
+    volumes:
+      - './etc:/etc/pihole'
+      - './dnsmasq.d:/etc/dnsmasq.d'
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
