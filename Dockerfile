@@ -6,7 +6,6 @@ ENV DOH_UPSTREAM https://cloudflare-dns.com/dns-query
 ENV DOH_PORT 5053
 
 ARG TARGETPLATFORM
-RUN echo "I'm building for $TARGETPLATFORM"
 
 RUN export ARCH=$(case ${TARGETPLATFORM:-linux/amd64} in \
     "linux/amd64")   echo "amd64"  ;; \
