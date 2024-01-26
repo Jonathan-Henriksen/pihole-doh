@@ -17,10 +17,10 @@ services:
       dns-net:
         ipv4_address: 50.5.0.2
     ports:
-      - '5300:53/tcp'
-      - '5300:53/udp'
-      - '6700:67/udp'
-      - '8000:80/tcp'
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '67:67/udp'
+      - '80:80/tcp'
     environment:
       TZ: 'Europe/Copenhagen'
       WEBPASSWORD: 'y0urP@ssW0rD'
@@ -28,7 +28,7 @@ services:
       UPSTREAM: 'https://cloudflare-dns.com/dns-query'
       WEB_BIND_ADDR: '50.5.0.2'
       FTLCONF_LOCAL_IPV4: '50.5.0.2'
-      PIHOLE_DNS_: '50.5.0.2#5053'
+      PIHOLE_DNS_: '50.5.0.2#5053;1.1.1.1'
     volumes:
       - './etc:/etc/pihole'
       - './dnsmasq.d:/etc/dnsmasq.d'
