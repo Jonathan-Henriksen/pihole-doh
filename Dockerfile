@@ -5,6 +5,8 @@ ENV TERM xterm
 ENV DOH_UPSTREAM https://cloudflare-dns.com/dns-query
 ENV DOH_PORT 5053
 
+RUN echo "RUNNER_ARCH ${RUNNER_ARCH}"
+
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y python3 curl net-tools \
