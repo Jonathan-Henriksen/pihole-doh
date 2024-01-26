@@ -5,13 +5,19 @@ ENV TERM xterm
 ENV DOH_UPSTREAM https://cloudflare-dns.com/dns-query
 ENV DOH_PORT 5053
 
-RUN echo "Platform: ${BUILDPLATFORM}"
+ARG TARGETPLATFORM
+RUN echo "I'm building for $TARGETPLATFORM"
 
-RUN DEBIAN_FRONTEND=noninteractive \
+RUN export ARCH=$(case ${TARGETPLATFORM:-linux/amd64} in \
+    "linux/amd64")   echo "amd64"  ;; \
+    "linux/arm64")   echo "arm64" ;; \
+    *)               echo ""        ;; esac) \
+  && echo "ARCH=$ARCH" \
+  && DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y python3 curl net-tools \
   && rm -rf /var/lib/apt/lists/* \
-  && curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64.deb \
+  && curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCH}.deb \
   && yes | sudo dpkg -i cloudflared.deb
 
 # Add strict order to prefer DoH even though it is a little slower
