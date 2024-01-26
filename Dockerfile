@@ -9,7 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y python3 curl net-tools \
   && rm -rf /var/lib/apt/lists/* \
-  && curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64.deb \
+  && curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${RUNNER_ARCH}.deb \
   && yes | sudo dpkg -i cloudflared.deb
 
 # Add strict order to prefer DoH even though it is a little slower
