@@ -23,7 +23,7 @@ RUN export ARCH=$(case ${TARGETPLATFORM:-linux/amd64} in \
 COPY ./config/02-strict-order.conf /etc/dnsmasq.d/02-strict-order.conf
 RUN chmod +x /etc/dnsmasq.d/02-strict-order.conf
 
-HEALTHCHECK --timeout=5s \
+HEALTHCHECK --interval=5m --timeout=5s \
   CMD nslookup google.com $WEB_BIND_ADDR || exit 1
 
 CMD /bin/bash -c "cloudflared proxy-dns --address $WEB_BIND_ADDR --port $DOH_PORT --upstream $DOH_UPSTREAM"
